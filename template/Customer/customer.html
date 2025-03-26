@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}customer{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">ลูกค้า</h1>
+
+<style>
+    /* ทำให้ตารางเลื่อนในกรณีที่มีข้อมูลเยอะ */
+    .table-container {
+        width: 100%;
+        max-height: 500px; /* ปรับตามความเหมาะสม */
+        overflow: auto;
+        border: 1px solid #ddd;
+    }
+
+        /* กำหนดให้ตารางขยายเต็มภายใน div */
+    table {
+        width: 100%;
+        border-collapse: collapse; /* เอาเส้นขอบของเซลล์มารวมกัน */
+    }
+
+    /* กำหนดขนาดของเซลล์ให้เหมาะสม */
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+        white-space: nowrap; /* ป้องกันข้อความขึ้นบรรทัดใหม่ */
+    }
+
+    /* เพิ่มการเน้นขอบของตารางเมื่อมีการโฮเวอร์ */
+    table tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>CUSTCODE</th>
+                <th>CUSTGRPCODE</th>
+                <th>CUSTPREFIX</th>
+                <th>CUSTNAME</th>
+                <th>CUSTADDRESS</th>
+                <th>CUSTTEL</th>
+                <th>CUSTIDCARD</th>
+                <th>CUSTPRICETYPE</th>
+                <th>CUSTPAYTYPE</th>
+                <th>CUSTCREDITDAY</th>
+                <th>CUSTCREDLIMIT</th>
+                <th>CUSTMODIFYDATE</th>
+                <th>CUSTMODIFYBY</th>
+                <th>CUSTREMARK</th>
+                <th>CUSTASTATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customer_text[:6] %}
+                <tr>
+                    <td>{{ customer[0] }}</td>
+                    <td>{{ customer[1] }}</td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                    <td>{{ customer[4] }}</td>
+                    <td>{{ customer[5] }}</td>
+                    <td>{{ customer[6] }}</td>
+                    <td>{{ customer[7] }}</td>
+                    <td>{{ customer[8] }}</td>
+                    <td>{{ customer[9] }}</td>
+                    <td>{{ customer[10] }}</td>
+                    <td>{{ customer[11] }}</td>
+                    <td>{{ customer[12] }}</td>
+                    <td>{{ customer[13] }}</td>
+                    <td>{{ customer[14] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

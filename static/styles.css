@@ -1,0 +1,31 @@
+nav {
+    background-color: #000000; /* เปลี่ยนสีพื้นหลังเป็นสีเข้ม */
+    padding: 35px 0; /* เพิ่มระยะห่างด้านบนและล่าง */
+    text-align: center; /* จัดให้อยู่ตรงกลาง */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* จัดให้เมนูอยู่ตรงกลาง */
+}
+
+nav ul li {
+    margin: 0 10px; /* เพิ่มระยะห่างระหว่างเมนู */
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: rgb(255, 255, 255); /* เปลี่ยนสีข้อความ */
+    font-size: 18px; /* ปรับขนาดตัวหนังสือให้ใหญ่ขึ้น */
+    font-weight: bold;
+    padding: 15px 30px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #555; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+    border-radius: 5px;
+}

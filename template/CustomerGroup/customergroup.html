@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}customerGroup{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center;">กลุ่มลูกค้า</h1>
+
+    <style>
+        /* กำหนดให้ตารางขยายเต็มความกว้างของหน้าจอ */
+        table {
+            width: 100%;
+            border-collapse: collapse; /* เอาเส้นขอบของเซลล์มารวมกัน */
+        }
+
+        /* กำหนดขนาดของเซลล์ให้เหมาะสม */
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* เพิ่มการเน้นขอบของตารางเมื่อมีการโฮเวอร์ */
+        table tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+
+    <table>
+        <thead>
+            <tr>
+                <th>CUSTGRPCODE</th>
+                <th>CUSTGRPNAME</th>
+                <th>CUSTGRPNOTE</th>
+                <th>CUSTGRPMNG</th>
+                <th>CUSTGRPSTATUS</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customer_text %}
+                <tr>
+                    <td>{{ customer[0] }}</td>
+                    <td>{{ customer[1] }}</td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                    <td>{{ customer[4] }}</td>
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

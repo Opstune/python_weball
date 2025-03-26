@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ค้นหาข้อมูล</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff00;
+            background-image: linear-gradient(to right, #000000, #ffffff74);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            margin: 50px auto;
+            width: 95%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .form-container {
+            width: 48%;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+        select, button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .btn-group {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 10px 15px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-search { background-color: #4d06ff; }
+        .btn-add { background-color: #28a745; }
+        .btn-edittttt { background-color: #ffc107; }
+        button.btn-edit {
+            background-color: transparent;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+        button.btn-edit i {
+            font-size: 20px;
+            color: #ffc107;
+        }
+        button.btn-edit:hover i {
+            color: #e0a800;
+        }
+        .btn-delete { background-color: #dc3545; }
+        .order-container {
+            margin-top: 20px;
+            width: 97%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+        }
+        .order-container h3 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .order-container table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .order-container th, .order-container td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f7f7f7;
+        }
+        .order-container th {
+            background-color: #000000;
+            color: white;
+            font-weight: bold;
+        }
+        .order-container tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ร้าน เครื่องเขียนนายวิน</h1>
+</div>
+
+<form method="POST" action="{{ url_for('home') }}">
+    <div class="container">
+        <!-- Customer Search Section -->
+        <div class="form-container">
+            <h3>รายการลูกค้า</h3>
+            <label for="customer">ชื่อลูกค้า</label>
+            <select name="customer" id="customer">
+                <option value="">---ชื่อลูกค้า---</option>
+                {% for row in customer_text %}
+                    <option value="{{ row[0] }}" {% if row[0] == select_customer %}selected{% endif %}>
+                        {{ row[2] }} {{ row[3] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- ช่องสำหรับเปลี่ยนชื่อใหม่ของลูกค้า -->
+            <label for="new_customer_name">เลือกชื่อลูกค้าใหม่ (ถ้ามีการเปลี่ยน)</label>
+            <select name="new_customer_name" id="new_customer_name">
+                <option value="">---เลือกชื่อลูกค้าใหม่---</option>
+                {% for row in customer_text %}
+                    <option value="{{ row[0] }}" {% if row[0] == select_new_customer_name %}selected{% endif %}>
+                        {{ row[2] }} {{ row[3] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="tel">เบอร์โทรศัพท์</label>
+            <select name="tel" id="tel">
+                <option value="">---เบอร์โทรศัพท์---</option>
+                {% for row in customer_text %}
+                    {% if row[0] == select_customer %}
+                        <option value="{{ row[5] }}" {% if row[5] == select_tel %}selected{% endif %}>
+                            {{ row[5] }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <label for="customergroup">ประเภทลูกค้า</label>
+            <select name="customergroup" id="customergroup">
+                <option value="">---ประเภทลูกค้า---</option>
+                {% for row in customergroup_text %}
+                    <option value="{{ row[0] }}" {% if row[0] == select_customergroup %}selected{% endif %}>
+                        {{ row[1] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div class="btn-group">
+                <button class="btn btn-search" type="submit" name="button_search">ค้นหา</button>
+            </div>
+        </div>
+
+
+        <!-- Product Selection Section -->
+        <div class="form-container">
+            <h3>ข้อมูลสินค้า</h3>
+            <label for="stock">สินค้า</label>
+            <select name="stock" id="stock">
+                <option value="">---เลือกสินค้า---</option>
+                {% for row in stock_text[:7] %}
+                    <option value="{{ row[0] }}" {% if row[0] == select_stock %}selected{% endif %}>
+                        {{ row[4] }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div class="btn-group">
+                <button class="btn-add" type="submit" name="button_add">เพิ่ม</button>
+                <button class="btn-edittttt" type="submit" name="button_update">อัพเดตข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Order Data Display -->
+<div class="order-container">
+    <h3>ข้อมูลการสั่งซื้อสินค้า</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>รหัสลูกค้า</th>
+                <th>ชื่อลูกค้า</th>
+                <th>สินค้า</th>
+                <th>ประเภทลูกค้า</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>แก้ไข</th>
+                <th>ยกเลิก   </th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for row in order_data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>
+                {% for name in customer_text %}
+                    {% if name[0] == row[0] %}
+                        {{ name[2] }} {{ name[3] }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for stock in stock_text %}
+                    {% if stock[0] == row[1] %}
+                        {{ stock[4] }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for group in customergroup_text %}
+                    {% if group[0] == row[2] %}
+                        {{ group[1] }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for num in customer_text %}
+                    {% if num[0] == row[0] %}
+                        {{ num[5] if num[5] else "ไม่พบข้อมูลเบอร์โทรศัพท์" }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+
+            <td>
+                {% if row[3] != 'ยกเลิก' %}
+                    <form method="POST" action="{{ url_for('home') }}">
+                        <button class="btn btn-edit" type="submit" name="select_edit" value="{{ row[0] }}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </form>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if row[3] != 'ยกเลิก' %}
+                    <form method="POST" action="{{ url_for('home') }}">
+                        <!-- ส่งค่า order ID ผ่าน value ของปุ่ม -->
+                        <button type="submit" name="cancel_order" value="{{ row[0] }}" 
+                            onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการยกเลิกคำสั่งซื้อนี้?')">
+                            ยกเลิกการสั่งซื้อ
+                        </button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{{ url_for('home') }}">
+                        <!-- ถ้าเป็นสถานะ 'ยกเลิก' ให้ปุ่มเป็น hidden -->
+                        <button type="submit" name="cancel_order" value="{{ row[0] }}" hidden>
+                            ยกเลิกการสั่งซื้อ
+                        </button>
+                    </form>
+                {% endif %}
+
+
+                <!-- {% if row[3] == 'ยกเลิก' %}
+                    <form method="POST" action="{{ url_for('home') }}">
+                        <button type="submit" name="restore_order" value="{{ row[0] }}" 
+                            onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการคืนค่าคำสั่งซื้อนี้?')">
+                            คืนค่าการสั่งซื้อ
+                        </button>
+                    </form>
+                {% endif %} -->
+            </td>
+            
+            
+            
+            
+        </tr>
+    {% endfor %}
+</tbody>
+
+
+
+
+
+    </table>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-message success" style="background-color: #28a745; color: white; padding: 10px;">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endwith %}
+
+</body>
+</html>
+{% endblock %}

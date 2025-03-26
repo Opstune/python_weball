@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask Web App{% endblock %}</title>
+    
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">หน้าแรก</a></li>
+                <li><a href="{{ url_for('customer') }}">ลูกค้า</a></li>
+                <li><a href="{{ url_for('customergroup') }}">กลุ่มลูกค้า</a></li>
+                <li><a href="{{ url_for('stock') }}">สินค้า</a></li>
+                <li><a href="{{ url_for('stockgroup') }}">กลุ่มสินค้า</a></li>
+                <li><a href="{{ url_for('saletype') }}">ประเภทการขาย</a></li>
+                <li><a href="{{ url_for('location') }}">ที่อยู่</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>
